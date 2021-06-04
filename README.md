@@ -8,12 +8,20 @@ Android大图监控，支持5.0-11的系统。
 
 ## 依赖
 
+[![](https://jitpack.io/v/simplepeng/BitmapCanary.svg)](https://jitpack.io/#simplepeng/BitmapCanary)
+
 ```groovy
 allprojects {
 	repositories {
 		...
 		maven { url 'https://jitpack.io' }
 	}
+}
+```
+
+```groovy
+dependencies {
+		debugImplementation 'com.github.simplepeng:BitmapCanary:v1.0.0'
 }
 ```
 
