@@ -1,0 +1,3 @@
+rootProject.name = "BitmapCanary"
+include ':app'
+include ':bitmap_canary'
