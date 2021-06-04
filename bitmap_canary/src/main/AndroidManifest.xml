@@ -5,4 +5,11 @@
 
     <uses-sdk tools:overrideLibrary="me.weishu.epic,me.weishu.freereflection" />
 
+    <application>
+        <provider
+            android:name=".BitmapCanaryInitiator"
+            android:authorities="${applicationId}.bitmap-canary-initiator"
+            android:exported="false"
+            android:multiprocess="true" />
+    </application>
 </manifest>

@@ -1,16 +1,19 @@
 package me.simple.bitmapcanary
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.Application
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
+import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import de.robv.android.xposed.DexposedBridge
-import java.lang.Exception
 
 internal object Helper {
 
@@ -116,5 +119,29 @@ internal object Helper {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    fun showToast(context: Context, text: String) {
+        val toast = Toast.makeText(context.applicationContext, text, Toast.LENGTH_LONG)
+        toast.setGravity(Gravity.CENTER, 0, 0)
+        toast.show()
+    }
+
+    @SuppressLint("PrivateApi")
+    fun getAppContext(context: Context?): Context? {
+        var appContext = context?.applicationContext
+
+        if (appContext == null) {
+            try {
+                val activityThread = Class.forName("android.app.ActivityThread")
+                val thread = activityThread.getMethod("currentActivityThread").invoke(null)
+                val app = activityThread.getMethod("getApplication").invoke(thread) as? Application
+                appContext = app?.applicationContext
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+
+        return appContext
     }
 }

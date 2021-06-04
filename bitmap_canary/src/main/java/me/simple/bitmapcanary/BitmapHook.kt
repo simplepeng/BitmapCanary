@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.view.View
 import de.robv.android.xposed.XC_MethodHook
+import java.lang.StringBuilder
 
 class BitmapHook : XC_MethodHook() {
 
@@ -27,6 +28,9 @@ class BitmapHook : XC_MethodHook() {
         val view = param.thisObject as View
         val context = view.context
         val activity = Helper.getActivity(context)
+        val activityName = if (activity != null) {
+            activity::class.java.name
+        } else ""
         val viewName = Helper.getViewNameById(view)
         val kb = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             bitmap.allocationByteCount / 1024
@@ -35,13 +39,10 @@ class BitmapHook : XC_MethodHook() {
         }
         val m = String.format("%.02f", kb / 1024f)
 
-
         //输出
         val isLogE = kb >= Helper.builder.thresholdValue
 
-        if (activity != null) {
-            Helper.log("Activity = ${activity::class.java.name}", isLogE)
-        }
+        Helper.log("Activity = $activityName", isLogE)
 
         Helper.log("view id = $viewName", isLogE)
         Helper.log("view width = ${view.width}", isLogE)
@@ -54,5 +55,13 @@ class BitmapHook : XC_MethodHook() {
         Helper.log("bitmap size = ${m}M", isLogE)
 
         Helper.log("----------------------------------------------------", isLogE)
+
+        if (isLogE) {
+            val builder = StringBuilder()
+            builder.append("Oops!!!").append("\n").append("\n")
+            builder.append("Bitmap Is Too Larger").append("\n").append("\n")
+            builder.append("You Can See Logcat -- BitmapCanary")
+            Helper.showToast(context, builder.toString())
+        }
     }
 }

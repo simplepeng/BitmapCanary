@@ -44,5 +44,5 @@ dependencies {
 
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     //
-    implementation project(path: ':bitmap_canary')
+    debugImplementation project(path: ':bitmap_canary')
 }
