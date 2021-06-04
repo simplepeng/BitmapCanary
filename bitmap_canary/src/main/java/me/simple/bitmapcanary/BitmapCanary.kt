@@ -6,8 +6,9 @@ object BitmapCanary {
 
     @Synchronized
     fun install(context: Context) {
-        if (!Helper.isSupport(context)) return
+        if (!Helper.isSupport()) return
 
+        Helper.parseMetaData(context)
 
         Helper.startHook()
     }

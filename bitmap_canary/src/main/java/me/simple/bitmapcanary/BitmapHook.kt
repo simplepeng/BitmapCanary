@@ -23,35 +23,36 @@ class BitmapHook : XC_MethodHook() {
         val bd = firstParam as BitmapDrawable
         val bitmap: Bitmap = bd.bitmap ?: return
 
-        Helper.log("bitmap width = ${bitmap.width}")
-        Helper.log("bitmap height = ${bitmap.height}")
-
+        val config = bitmap.config
         val view = param.thisObject as View
-
         val context = view.context
         val activity = Helper.getActivity(context)
-        if (activity != null) {
-            Helper.log("Activity = ${activity::class.java.name}")
-        }
-
         val viewName = Helper.getViewNameById(view)
-        Helper.log("view id = $viewName")
-        Helper.log("view width = ${view.width}")
-        Helper.log("view height = ${view.height}")
-
-        val byteCount = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            bitmap.allocationByteCount
+        val kb = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            bitmap.allocationByteCount / 1024
         } else {
-            bitmap.byteCount
+            bitmap.byteCount / 1024
         }
-        Helper.log("bitmap size = ${byteCount / 1024}kb")
+        val m = String.format("%.02f", kb / 1024f)
 
-        val m = String.format("%.02f", byteCount / 1024f / 1024f)
-        Helper.log("bitmap size = ${m}M")
 
-        val config = bitmap.config
-        Helper.log("bitmap config = $config")
+        //输出
+        val isLogE = kb >= Helper.builder.thresholdValue
 
-        Helper.log("----------------------------------------------------")
+        if (activity != null) {
+            Helper.log("Activity = ${activity::class.java.name}", isLogE)
+        }
+
+        Helper.log("view id = $viewName", isLogE)
+        Helper.log("view width = ${view.width}", isLogE)
+        Helper.log("view height = ${view.height}", isLogE)
+
+        Helper.log("bitmap width = ${bitmap.width}", isLogE)
+        Helper.log("bitmap height = ${bitmap.height}", isLogE)
+        Helper.log("bitmap config = $config", isLogE)
+        Helper.log("bitmap size = ${kb}kb", isLogE)
+        Helper.log("bitmap size = ${m}M", isLogE)
+
+        Helper.log("----------------------------------------------------", isLogE)
     }
 }

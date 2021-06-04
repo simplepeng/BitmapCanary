@@ -1,8 +1,11 @@
 package me.simple.bitmapcanary
 
-import android.content.Context
 
 internal class Builder {
 
-    lateinit var context: Context
+    //阈值，默认为3m
+    var thresholdValue = 3 * 1024
+
+    //
+    var enableLog = true
 }

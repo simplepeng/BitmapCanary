@@ -3,6 +3,7 @@ package me.simple.bitmapcanary
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
@@ -13,9 +14,13 @@ import java.lang.Exception
 
 internal object Helper {
 
-    const val TAG = "BitmapCanary"
+    private const val TAG = "BitmapCanary"
+    val builder = Builder()
 
-    fun isSupport(context: Context): Boolean {
+    private const val KEY_THRESHOLD_VALUE = "bitmap_canary_threshold_value"
+    private const val KEY_ENABLE_LOG = "bitmap_canary_enable_log"
+
+    fun isSupport(): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return false
         }
@@ -23,8 +28,13 @@ internal object Helper {
     }
 
     fun startHook() {
-        startHookImageView()
-        startHookViewBackground()
+        try {
+            startHookImageView()
+            startHookViewBackground()
+        } catch (e: Exception) {
+            logE("$TAG start hook have exception")
+            e.printStackTrace()
+        }
     }
 
     private fun startHookImageView() {
@@ -45,15 +55,21 @@ internal object Helper {
         )
     }
 
-    fun log(msg: String) {
-        logI(msg)
+    fun log(msg: String, logE: Boolean = false) {
+        if (!builder.enableLog) return
+
+        if (logE) {
+            logE(msg)
+        } else {
+            logI(msg)
+        }
     }
 
-    fun logI(msg: String) {
+    private fun logI(msg: String) {
         Log.i(TAG, msg)
     }
 
-    fun logE(msg: String) {
+    private fun logE(msg: String) {
         Log.e(TAG, msg)
     }
 
@@ -80,5 +96,25 @@ internal object Helper {
         }
 
         return ""
+    }
+
+    fun parseMetaData(context: Context) {
+        try {
+            val pm = context.packageManager
+            val appInfo = pm.getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
+            val metaData = appInfo.metaData ?: return
+
+            if (metaData.containsKey(KEY_THRESHOLD_VALUE)) {
+                val thresholdValue = metaData.get(KEY_THRESHOLD_VALUE) as Int
+                builder.thresholdValue = thresholdValue
+            }
+
+            if (metaData.containsKey(KEY_ENABLE_LOG)) {
+                val enableLog = metaData.get(KEY_ENABLE_LOG) as Boolean
+                builder.enableLog = enableLog
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 }

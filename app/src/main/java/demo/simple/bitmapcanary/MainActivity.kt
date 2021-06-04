@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         btnLoad.setOnClickListener {
             loadResource()
             loadBackground()
+            loadGlideResource()
+            loadNetwork()
         }
     }
 
