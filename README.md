@@ -24,14 +24,14 @@ allprojects {
 ```xml
 <manifest>
     <application>            
-      <!--    监控阈值，kb    -->
-<meta-data
-    android:name="bitmap_canary_threshold_value"
-    android:value="3000" />
-<!--    是否允许输出Log    -->
-<meta-data
-    android:name="bitmap_canary_enable_log"
-    android:value="true" />
+      	<!--    监控阈值，kb    -->
+				<meta-data
+    				android:name="bitmap_canary_threshold_value"
+    				android:value="3000" />
+				<!--    是否允许输出Log    -->
+				<meta-data
+    				android:name="bitmap_canary_enable_log"
+    				android:value="true" />
      </application>           
 </manifest>
 ```
