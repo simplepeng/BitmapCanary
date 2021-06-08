@@ -24,8 +24,15 @@ class BitmapHook : XC_MethodHook() {
         val bd = firstParam as BitmapDrawable
         val bitmap: Bitmap = bd.bitmap ?: return
 
+        val view = param.thisObject as? View ?: return
+
+        view.post {
+            verifyParam(bitmap, view)
+        }
+    }
+
+    private fun verifyParam(bitmap: Bitmap, view: View) {
         val config = bitmap.config
-        val view = param.thisObject as View
         val context = view.context
         val activity = Helper.getActivity(context)
         val activityName = if (activity != null) {

@@ -90,7 +90,7 @@ internal object Helper {
     }
 
     fun getViewNameById(view: View): String {
-        if (view.id == View.NO_ID) return ""
+        if (view.id == View.NO_ID) return "no_id"
 
         try {
             return view.resources.getResourceEntryName(view.id)
@@ -98,7 +98,7 @@ internal object Helper {
 
         }
 
-        return ""
+        return "not found"
     }
 
     fun parseMetaData(context: Context) {
