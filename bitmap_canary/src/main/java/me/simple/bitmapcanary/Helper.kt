@@ -122,7 +122,7 @@ internal object Helper {
     }
 
     fun showToast(context: Context, text: String) {
-        val toast = Toast.makeText(context.applicationContext, text, Toast.LENGTH_LONG)
+        val toast = Toast.makeText(context.applicationContext, text, Toast.LENGTH_SHORT)
         toast.setGravity(Gravity.CENTER, 0, 0)
         toast.show()
     }
