@@ -31,18 +31,22 @@ class DrawableHook : XC_MethodHook() {
         val view = param.thisObject as? View ?: return
 
         view.post {
-            verifyParam(bitmap, view)
+            verifyParam(param, bitmap, view)
         }
     }
 
-    private fun verifyParam(bitmap: Bitmap, view: View) {
+    private fun verifyParam(param: MethodHookParam, bitmap: Bitmap, view: View) {
         val config = bitmap.config
+
         val context = view.context
         val activity = Helper.getActivity(context)
         val activityName = if (activity != null) {
             activity::class.java.name
         } else ""
+
         val viewName = Helper.getViewNameById(view)
+        val viewClass = view.javaClass.name
+
         val kb = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             bitmap.allocationByteCount / 1024
         } else {
@@ -55,13 +59,22 @@ class DrawableHook : XC_MethodHook() {
 
         Helper.log("Activity = $activityName", isLogE)
 
+        Helper.log(" ", isLogE)
+
         Helper.log("view id = $viewName", isLogE)
+        Helper.log("view class = $viewClass", isLogE)
+        Helper.log("view method = ${param.method.name}", isLogE)
         Helper.log("view width = ${view.width}", isLogE)
         Helper.log("view height = ${view.height}", isLogE)
+
+        Helper.log(" ", isLogE)
 
         Helper.log("bitmap width = ${bitmap.width}", isLogE)
         Helper.log("bitmap height = ${bitmap.height}", isLogE)
         Helper.log("bitmap config = $config", isLogE)
+
+        Helper.log(" ", isLogE)
+
         Helper.log("bitmap size = ${kb}kb", isLogE)
         Helper.log("bitmap size = ${m}M", isLogE)
 
