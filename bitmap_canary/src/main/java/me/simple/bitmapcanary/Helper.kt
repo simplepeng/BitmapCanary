@@ -45,7 +45,7 @@ internal object Helper {
             ImageView::class.java,
             "setImageDrawable",
             Drawable::class.java,
-            BitmapHook()
+            DrawableHook()
         )
     }
 
@@ -54,7 +54,7 @@ internal object Helper {
             View::class.java,
             "setBackgroundDrawable",
             Drawable::class.java,
-            BitmapHook()
+            DrawableHook()
         )
     }
 

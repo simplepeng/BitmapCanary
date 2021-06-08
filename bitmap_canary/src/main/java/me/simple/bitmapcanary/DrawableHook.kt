@@ -7,11 +7,15 @@ import android.view.View
 import de.robv.android.xposed.XC_MethodHook
 import java.lang.StringBuilder
 
-class BitmapHook : XC_MethodHook() {
+class DrawableHook : XC_MethodHook() {
 
     override fun beforeHookedMethod(param: MethodHookParam) {
         super.beforeHookedMethod(param)
 
+    }
+
+    override fun afterHookedMethod(param: MethodHookParam) {
+        super.afterHookedMethod(param)
         parseParam(param)
     }
 
