@@ -21,7 +21,7 @@ allprojects {
 
 ```groovy
 dependencies {
-		debugImplementation 'com.github.simplepeng:BitmapCanary:v1.0.0'
+		debugImplementation 'com.github.simplepeng:BitmapCanary:v1.0.1'
 }
 ```
 
@@ -47,5 +47,7 @@ dependencies {
 可以不配置，监控阈值默认为3M，默认是输出log的。
 
 ## 版本迭代
+
+* v1.0.1：优化输出
 
 * v1.0.0：首次发布
