@@ -6,6 +6,7 @@ import android.app.Application
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
@@ -90,10 +91,17 @@ internal object Helper {
     }
 
     fun getViewNameById(view: View): String {
-        if (view.id == View.NO_ID) return "no_id"
+        return getViewNameById(view.resources, view.id)
+    }
+
+    fun getViewNameById(
+        resources: Resources,
+        id: Int
+    ): String {
+        if (id == View.NO_ID) return "no_id"
 
         try {
-            return view.resources.getResourceEntryName(view.id)
+            return resources.getResourceEntryName(id)
         } catch (e: Exception) {
 
         }

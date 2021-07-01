@@ -45,6 +45,13 @@ class DrawableHook : XC_MethodHook() {
         } else ""
 
         val viewName = Helper.getViewNameById(view)
+
+        //判断是否被标记忽略
+        val viewNames = BitmapCanary.ignoreMap[activityName]
+        if (viewNames?.contains(viewName) == true) {
+            return
+        }
+
         val viewClass = view.javaClass.name
 
         val kb = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
