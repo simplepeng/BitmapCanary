@@ -10,6 +10,7 @@ class BitmapCanaryInitiator : ContentProvider() {
     override fun onCreate(): Boolean {
         val appContext = Helper.getAppContext(context) ?: return false
         BitmapCanary.install(appContext)
+        Helper.mContext = appContext
         return true
     }
 

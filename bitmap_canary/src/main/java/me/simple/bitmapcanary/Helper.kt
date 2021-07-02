@@ -14,8 +14,11 @@ import android.view.Gravity
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import de.robv.android.xposed.DexposedBridge
 
+@SuppressLint("StaticFieldLeak")
 internal object Helper {
 
     private const val TAG = "BitmapCanary"
@@ -24,6 +27,13 @@ internal object Helper {
     private const val KEY_THRESHOLD_VALUE = "bitmap_canary_threshold_value"
     private const val KEY_ENABLE_LOG = "bitmap_canary_enable_log"
 
+    var mContext: Context? = null
+
+    val ignoreClassMap = hashMapOf<String, List<String?>>()
+
+    /**
+     * 是否支持hook
+     */
     fun isSupport(): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return false
@@ -41,6 +51,9 @@ internal object Helper {
         }
     }
 
+    /**
+     * hook-ImageView.setImageDrawable
+     */
     private fun startHookImageView() {
         DexposedBridge.findAndHookMethod(
             ImageView::class.java,
@@ -50,6 +63,9 @@ internal object Helper {
         )
     }
 
+    /**
+     * hook-View.setBackgroundDrawable
+     */
     private fun startHookViewBackground() {
         DexposedBridge.findAndHookMethod(
             View::class.java,
@@ -77,6 +93,9 @@ internal object Helper {
         Log.e(TAG, msg)
     }
 
+    /**
+     * 从Context中获取Activity
+     */
     fun getActivity(context: Context): Activity? {
         if (context is Activity) return context
 
@@ -90,10 +109,83 @@ internal object Helper {
         return null
     }
 
+    /**
+     * 获取当前显示的Fragment
+     */
+    fun getVisibleFragment(activity: Activity?): Fragment? {
+        if (activity == null) return null
+
+        if (activity is FragmentActivity) {
+            val fragments = activity.supportFragmentManager.fragments
+            if (fragments.isEmpty()) return null
+            for (fragment in fragments) {
+                if (fragment.userVisibleHint) {
+                    return fragment
+                }
+            }
+        }
+
+        return null
+    }
+
+    /**
+     * 获取Activity中的fragments
+     */
+    fun getFragmentsInActivity(activity: Activity?): List<Fragment> {
+        if (activity == null) return emptyList()
+
+        if (activity is FragmentActivity) {
+            return activity.supportFragmentManager.fragments
+        }
+
+        return emptyList()
+    }
+
+    /**
+     * 获取已经Resumed了的Fragments
+     */
+    fun getResumedFragments(activity: Activity?): List<Fragment> {
+        return getFragmentsInActivity(activity).filter {
+            it.isResumed
+        }
+    }
+
+    /**
+     * 获取Activity中的fragments
+     */
+    fun getViewAttachedFragment(id: Int, fragments: List<Fragment>): Fragment? {
+        var view: View? = null
+        for (fragment in fragments) {
+            view = fragment.view?.findViewById<View>(id)
+            if (view != null) return fragment
+        }
+        return null
+    }
+
+    /**
+     * 获取Fragment的父类Fragments
+     */
+    fun getParentFragments(f: Fragment): List<Fragment> {
+        val pfs = mutableListOf<Fragment>()
+        var curFragment = f
+        while (curFragment.parentFragment != null) {
+            val pf = curFragment.parentFragment!!
+            pfs.add(pf)
+            curFragment = pf
+        }
+        return pfs
+    }
+
+    /**
+     * 用id获取View的名称
+     */
     fun getViewNameById(view: View): String {
         return getViewNameById(view.resources, view.id)
     }
 
+    /**
+     * 用id获取View的名称
+     */
     fun getViewNameById(
         resources: Resources,
         id: Int
@@ -109,6 +201,9 @@ internal object Helper {
         return "not found"
     }
 
+    /**
+     * 解析MetaData
+     */
     fun parseMetaData(context: Context) {
         try {
             val pm = context.packageManager
@@ -129,12 +224,18 @@ internal object Helper {
         }
     }
 
+    /**
+     * 显示Toast
+     */
     fun showToast(context: Context, text: String) {
         val toast = Toast.makeText(context.applicationContext, text, Toast.LENGTH_SHORT)
         toast.setGravity(Gravity.CENTER, 0, 0)
         toast.show()
     }
 
+    /**
+     * 获取ApplicationContext
+     */
     @SuppressLint("PrivateApi")
     fun getAppContext(context: Context?): Context? {
         var appContext = context?.applicationContext
@@ -151,5 +252,33 @@ internal object Helper {
         }
 
         return appContext
+    }
+
+    /**
+     * 可以被忽略不监控
+     */
+    fun canIgnore(clazz: Class<*>?, viewName: String?): Boolean {
+        return canIgnore(clazz?.name, viewName)
+    }
+
+    /**
+     * 可以被忽略不监控
+     */
+    fun canIgnore(clazzName: String?, viewName: String?): Boolean {
+        if (clazzName.isNullOrEmpty()) return false
+
+        val viewNames = Helper.ignoreClassMap[clazzName]
+        if (viewNames != null && viewNames.isEmpty()) return true
+
+        return viewNames?.contains(viewName) == true
+    }
+
+    /**
+     * 获取类名
+     */
+    fun getClassName(any: Any?): String {
+        if (any == null) return ""
+
+        return any::class.java.name ?: ""
     }
 }

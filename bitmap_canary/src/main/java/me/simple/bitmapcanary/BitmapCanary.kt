@@ -1,18 +1,12 @@
 package me.simple.bitmapcanary
 
-import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 
-@SuppressLint("StaticFieldLeak")
 object BitmapCanary {
-
-    internal val ignoreMap = hashMapOf<String, List<String?>>()
-
-    internal lateinit var mCtx: Context
 
     @Synchronized
     internal fun install(context: Context) {
-        mCtx = context
         if (!Helper.isSupport()) return
 
         Helper.parseMetaData(context)
@@ -20,11 +14,45 @@ object BitmapCanary {
         Helper.startHook()
     }
 
+    /**
+     * 忽略一个Activity的某些view
+     * viewIds不传就是全部忽略
+     */
     @Synchronized
-    fun ignore(clazz: Class<*>, vararg viewIds: Int) {
+    fun ignoreActivity(
+        clazz: Class<out Activity>,
+        viewIds: List<Int> = emptyList()
+    ) {
+        ignoreClassWithIds(clazz.name, viewIds)
+    }
+
+    /**
+     * 忽略一个类的某些View
+     * viewIds不传就是全部忽略
+     */
+    fun ignoreClassWithIds(
+        clazzName: String,
+        viewIds: List<Int> = emptyList()
+    ) {
+        if (Helper.mContext == null) return
+
         val viewNames = viewIds.map { id ->
-            Helper.getViewNameById(mCtx.resources, id)
+            Helper.getViewNameById(Helper.mContext!!.resources, id)
         }
-        ignoreMap[clazz.name] = viewNames
+
+        ignoreClassWithNames(clazzName, viewNames)
+    }
+
+    /**
+     * 忽略一个类的某些View
+     * viewNames不传就是全部忽略
+     */
+    fun ignoreClassWithNames(
+        clazzName: String,
+        viewNames: List<String> = emptyList()
+    ) {
+        if (Helper.mContext == null) return
+
+        Helper.ignoreClassMap[clazzName] = viewNames
     }
 }

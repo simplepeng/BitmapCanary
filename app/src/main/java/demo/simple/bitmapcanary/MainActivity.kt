@@ -1,5 +1,6 @@
 package demo.simple.bitmapcanary
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -14,7 +15,10 @@ class MainActivity : AppCompatActivity() {
     val view1 by lazy { findViewById<View>(R.id.view1) }
     val imageView2 by lazy { findViewById<ImageView>(R.id.imageView2) }
     val imageView3 by lazy { findViewById<ImageView>(R.id.imageView3) }
+
     val btnLoad by lazy { findViewById<Button>(R.id.btnLoad) }
+    val btnFragment by lazy { findViewById<Button>(R.id.btnFragment) }
+    val btnViewPager by lazy { findViewById<Button>(R.id.btnViewPager) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +30,14 @@ class MainActivity : AppCompatActivity() {
             loadBackground()
             loadGlideResource()
             loadNetwork()
+        }
+
+        btnFragment.setOnClickListener {
+            startActivity(Intent(this, FragmentReplaceActivity::class.java))
+        }
+
+        btnViewPager.setOnClickListener {
+            startActivity(Intent(this, ViewPagerActivity::class.java))
         }
     }
 
@@ -44,17 +56,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadNetwork() {
-        val url =
-            "https://huaweiyun.other.51wnl-cq.com/Mooda/DiaryPicture/a0a302b78e2f43d882b4359dc449f19f.jpg"
-        val url1 =
-            "https://huaweiyun.other.51wnl-cq.com/Mooda/DiaryPicture/3b296bfec2ac4824935c7c87827d3a97.jpg"
-        val url2 =
-            "https://huaweiyun.other.51wnl-cq.com/Mooda/DiaryPicture/61b77450a97e49009d18b84398a7efd4.jpeg"
-        Glide.with(this)
-            .asBitmap()
-            .load(url2)
-            .skipMemoryCache(true)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .into(imageView3)
+        Helper.loadImage(this, imageView3)
     }
 }

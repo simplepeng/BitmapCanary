@@ -11,7 +11,6 @@ class DrawableHook : XC_MethodHook() {
 
     override fun beforeHookedMethod(param: MethodHookParam) {
         super.beforeHookedMethod(param)
-
     }
 
     override fun afterHookedMethod(param: MethodHookParam) {
@@ -19,6 +18,9 @@ class DrawableHook : XC_MethodHook() {
         parseParam(param)
     }
 
+    /**
+     * 解析hook到的方法
+     */
     private fun parseParam(param: MethodHookParam) {
         if (param.args.isEmpty()) return
 
@@ -39,21 +41,34 @@ class DrawableHook : XC_MethodHook() {
         val config = bitmap.config
 
         val context = view.context
-        val activity = Helper.getActivity(context)
-        val activityName = if (activity != null) {
-            activity::class.java.name
-        } else ""
 
+        //获取Activity
+        val activity = Helper.getActivity(context)
+        val activityName = if (activity != null) activity::class.java.name else ""
+
+        //View的名称
         val viewName = Helper.getViewNameById(view)
 
-        //判断是否被标记忽略
-        val viewNames = BitmapCanary.ignoreMap[activityName]
-        if (viewNames?.contains(viewName) == true) {
+        //获取Activity中的Fragment
+        val fragments = Helper.getResumedFragments(activity)
+
+        //判断是否被标记忽略-不监控
+//        for (f in fragments) {
+//            val viewNames = BitmapCanary.ignoreMap[ignoreClassName]
+//            if (Helper.canIgnore(f::class.java, viewName)) {
+//                return
+//            }
+//        }
+
+        //忽略到的Activity
+        if (Helper.canIgnore(activityName, viewName)) {
             return
         }
 
+        //View的类名
         val viewClass = view.javaClass.name
 
+        //占多大内存
         val kb = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             bitmap.allocationByteCount / 1024
         } else {
@@ -65,6 +80,16 @@ class DrawableHook : XC_MethodHook() {
         val isLogE = kb >= Helper.builder.thresholdValue
 
         Helper.log("Activity = $activityName", isLogE)
+
+        if (fragments.isNotEmpty()) {
+            for (f in fragments) {
+                Helper.log("Fragment = ${Helper.getClassName(f)}", isLogE)
+                val pfs = Helper.getParentFragments(f)
+                for (pf in pfs) {
+                    Helper.log("Parent Fragment = ${Helper.getClassName(pf)}", isLogE)
+                }
+            }
+        }
 
         Helper.log(" ", isLogE)
 
