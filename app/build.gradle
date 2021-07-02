@@ -45,5 +45,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     //
     debugImplementation project(path: ':bitmap_canary')
+    releaseImplementation project(path: ':bitmap_canary_no_op')
+
 //    debugImplementation 'com.github.simplepeng:BitmapCanary:v1.0.0'
 }

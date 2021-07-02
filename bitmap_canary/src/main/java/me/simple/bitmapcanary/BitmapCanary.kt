@@ -30,6 +30,7 @@ object BitmapCanary {
      * 忽略一个类的某些View
      * viewIds不传就是全部忽略
      */
+    @Synchronized
     fun ignoreClassWithIds(
         clazzName: String,
         viewIds: List<Int> = emptyList()
@@ -47,6 +48,7 @@ object BitmapCanary {
      * 忽略一个类的某些View
      * viewNames不传就是全部忽略
      */
+    @Synchronized
     fun ignoreClassWithNames(
         clazzName: String,
         viewNames: List<String> = emptyList()

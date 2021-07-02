@@ -22,7 +22,4 @@ android {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    //
-    implementation 'me.weishu:epic:0.11.0'
-    implementation 'androidx.appcompat:appcompat:1.2.0'
 }
