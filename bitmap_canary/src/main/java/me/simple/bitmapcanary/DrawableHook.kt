@@ -79,6 +79,15 @@ class DrawableHook : XC_MethodHook() {
         //输出
         val isLogE = kb >= Helper.builder.thresholdValue
 
+        //显示Toast
+        if (isLogE) {
+            val builder = StringBuilder()
+            builder.append("Oops!!!").append("\n").append("\n")
+            builder.append("Bitmap Is Too Larger").append("\n").append("\n")
+            builder.append("You Can See Logcat -- BitmapCanary")
+            Helper.showToast(context, builder.toString())
+        }
+
         Helper.log("Activity = $activityName", isLogE)
 
         if (fragments.isNotEmpty()) {
@@ -112,12 +121,6 @@ class DrawableHook : XC_MethodHook() {
 
         Helper.log("----------------------------------------------------", isLogE)
 
-        if (isLogE) {
-            val builder = StringBuilder()
-            builder.append("Oops!!!").append("\n").append("\n")
-            builder.append("Bitmap Is Too Larger").append("\n").append("\n")
-            builder.append("You Can See Logcat -- BitmapCanary")
-            Helper.showToast(context, builder.toString())
-        }
+
     }
 }

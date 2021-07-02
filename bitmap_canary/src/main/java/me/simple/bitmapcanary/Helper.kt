@@ -75,6 +75,9 @@ internal object Helper {
         )
     }
 
+    /**
+     * 输出日志
+     */
     fun log(msg: String, logE: Boolean = false) {
         if (!builder.enableLog) return
 
