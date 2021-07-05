@@ -21,7 +21,8 @@ allprojects {
 
 ```groovy
 dependencies {
-		debugImplementation 'com.github.simplepeng:BitmapCanary:v1.0.1'
+		debugImplementation 'com.github.simplepeng.BitmapCanary:bitmap_canary:v1.0.2'
+    releaseImplementation 'com.github.simplepeng.BitmapCanary:bitmap_canary_no_op:v1.0.2'
 }
 ```
 
@@ -47,6 +48,8 @@ dependencies {
 可以不配置，监控阈值默认为3M，默认是输出log的。
 
 ## 版本迭代
+
+* v1.0.2：增加忽略相关类的api，增加Activity中依附的Fragment输出
 
 * v1.0.1：优化输出
 
