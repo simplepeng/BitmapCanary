@@ -14,6 +14,6 @@ class App : Application() {
 //            mutableListOf(R.id.imageView1, R.id.imageView3)
 //        )
 
-//        BitmapCanary.ignoreActivity(MainActivity::class.java, mutableListOf(R.id.imageView3))
+        BitmapCanary.ignoreActivity(MainActivity::class.java, mutableListOf(R.id.imageView3))
     }
 }
