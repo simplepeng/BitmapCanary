@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/bitmap_canary" />
             <option value="$PROJECT_DIR$/bitmap_canary_no_op" />
+            <option value="$PROJECT_DIR$/bitmap_canary_scanner" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

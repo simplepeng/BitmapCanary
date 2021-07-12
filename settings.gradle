@@ -2,3 +2,4 @@ rootProject.name = "BitmapCanary"
 include ':app'
 include ':bitmap_canary'
 include ':bitmap_canary_no_op'
+include ':bitmap_canary_scanner'
