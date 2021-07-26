@@ -47,7 +47,21 @@ dependencies {
 
 可以不配置，监控阈值默认为3M，默认是输出log的。
 
+## 扫描器
+
+使用[bitmap_canary_scanner.jar](/bitmap_canary_scanner/libs/)扫描器，可以不运行App直接扫描所有的图片，计算其占用的内存的，默认使用的`ARGB_8888`4个字节计算。
+
+```shell
+java -jar bitmap_canary_scanner.jar "root path" "maxValue"
+```
+
+--root path : 指代项目根目录
+
+--maxValue : 指代检测的阈值，浮点类型，单位M
+
 ## 版本迭代
+
+* v1.0.3：增加`bitmap_canary_scanner`扫描器
 
 * v1.0.2：增加忽略相关类的api，增加Activity中依附的Fragment输出
 
