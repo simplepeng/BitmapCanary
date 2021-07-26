@@ -73,11 +73,17 @@ public class ScannerJob {
         String path = file.getAbsolutePath();
         String parentName = file.getParent();
         String name = file.getName();
+
         if (parentName == null || parentName.length() < 1) return;
-        if ((parentName.contains("drawable") || parentName.contains("mipmap"))
-                && !path.contains("/build/generated")
-                && !name.endsWith("xml")) {
-            analyseFiles.add(file);
+        if (path.contains("/build/generated")) return;
+        if (name.endsWith("xml")) return;
+
+        if ((parentName.contains("drawable") || parentName.contains("mipmap"))) {
+            if (name.endsWith("png") || name.endsWith("jpg")
+                    || name.endsWith("jpeg") || name.endsWith("webp")
+                    || name.endsWith("gif") || name.endsWith("bmp")) {
+                analyseFiles.add(file);
+            }
         }
     }
 
