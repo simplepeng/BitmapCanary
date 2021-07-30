@@ -3,6 +3,7 @@ package demo.simple.bitmapcanary
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -24,6 +25,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val xDpi = resources.displayMetrics.xdpi
+        val yDpi = resources.displayMetrics.ydpi
+        Log.d("MainActivity", "xDpi -- $xDpi")
+        Log.d("MainActivity", "yDpi -- $yDpi")
 
         btnLoad.setOnClickListener {
             loadResource()
@@ -42,7 +47,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadResource() {
-        imageView1.setImageResource(R.drawable.ic_launcher)
+        imageView1.setImageResource(R.drawable.iu)
     }
 
     private fun loadBackground() {

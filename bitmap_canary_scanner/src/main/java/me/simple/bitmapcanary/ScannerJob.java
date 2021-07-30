@@ -132,9 +132,9 @@ public class ScannerJob {
 
         if (memory >= maxByte) {
             String m = String.format(Locale.getDefault(), "%.02fM", memory / 1024f / 1024f);
+            println("---------------------------------------------------------------------------------------");
             println("this bitmap is too large in memory  -- " + m);
             println("path == " + file.getAbsolutePath());
-            println("---------------------------------------------------------------------------------------");
         }
     }
 }
