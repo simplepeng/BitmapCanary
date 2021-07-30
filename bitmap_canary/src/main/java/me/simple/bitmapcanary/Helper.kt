@@ -36,9 +36,11 @@ internal object Helper {
      */
     fun isSupport(): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            log("不支持的系统版本 -- ${Build.VERSION.SDK_INT}", true)
             return false
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            log("不支持的系统版本 -- ${Build.VERSION.SDK_INT}", true)
             return false
         }
 
