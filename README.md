@@ -59,6 +59,25 @@ java -jar bitmap_canary_scanner.jar "root path" "maxValue"
 
 --maxValue : 指代检测的阈值，浮点类型，单位M
 
+```shell
+# 例如
+java -jar bitmap_canary_scanner.jar "/ws_android/BitmapCanary/" "1.0"
+```
+
+```shell
+# 输出
+rootPath -- /Users/chenpeng/Desktop/work_space/ws_android/BitmapCanary
+---------------------------------------------------------------------------------------
+this bitmap is too large in memory  -- 1.72M
+path == /Users/chenpeng/Desktop/work_space/ws_android/BitmapCanary/app/src/main/res/drawable/iu_webp.webp
+---------------------------------------------------------------------------------------
+this bitmap is too large in memory  -- 1.83M
+path == /Users/chenpeng/Desktop/work_space/ws_android/BitmapCanary/app/src/main/res/drawable/img_gif.gif
+---------------------------------------------------------------------------------------
+this bitmap is too large in memory  -- 1.72M
+path == /Users/chenpeng/Desktop/work_space/ws_android/BitmapCanary/app/src/main/res/drawable-xhdpi/iu.jpeg
+```
+
 ## 版本迭代
 
 * v1.0.3：增加`bitmap_canary_scanner`扫描器

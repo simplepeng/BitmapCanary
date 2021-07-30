@@ -28,6 +28,7 @@ public class ScannerJob {
             @Override
             public void run() {
                 File rootDir = new File(mRootPath);
+                println("--------------------------------------------------------------------------------------------");
                 println("rootPath -- " + rootDir.getAbsolutePath());
                 if (!rootDir.isDirectory()) {
                     println("rootPath is not Directory");
@@ -132,7 +133,7 @@ public class ScannerJob {
 
         if (memory >= maxByte) {
             String m = String.format(Locale.getDefault(), "%.02fM", memory / 1024f / 1024f);
-            println("---------------------------------------------------------------------------------------");
+            println("--------------------------------------------------------------------------------------------");
             println("this bitmap is too large in memory  -- " + m);
             println("path == " + file.getAbsolutePath());
         }

@@ -38,6 +38,10 @@ internal object Helper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             return false
         }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return false
+        }
+
         return true
     }
 
