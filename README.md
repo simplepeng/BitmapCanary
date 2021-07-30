@@ -21,8 +21,8 @@ allprojects {
 
 ```groovy
 dependencies {
-	debugImplementation 'com.github.simplepeng.BitmapCanary:bitmap_canary:v1.0.2'
-	releaseImplementation 'com.github.simplepeng.BitmapCanary:bitmap_canary_no_op:v1.0.2'
+	debugImplementation 'com.github.simplepeng.BitmapCanary:bitmap_canary:v1.0.3'
+	releaseImplementation 'com.github.simplepeng.BitmapCanary:bitmap_canary_no_op:v1.0.3'
 }
 ```
 
