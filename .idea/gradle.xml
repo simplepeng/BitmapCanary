@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/bitmap_canary" />
             <option value="$PROJECT_DIR$/bitmap_canary_no_op" />
             <option value="$PROJECT_DIR$/bitmap_canary_scanner" />
+            <option value="$PROJECT_DIR$/duplicated_image_scanner" />
           </set>
         </option>
       </GradleProjectSettings>

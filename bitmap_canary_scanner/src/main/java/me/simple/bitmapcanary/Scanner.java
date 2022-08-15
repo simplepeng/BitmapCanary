@@ -4,7 +4,6 @@ import java.io.File;
 
 public class Scanner {
 
-
     public static void main(String[] args) {
         try {
             String rootPath;
