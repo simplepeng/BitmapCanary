@@ -5,6 +5,9 @@
       <module name="BitmapCanary.app" target="1.8" />
       <module name="BitmapCanary.bitmap_canary" target="1.8" />
       <module name="BitmapCanary.bitmap_canary_no_op" target="1.8" />
+      <module name="BitmapCanary.duplicated_image_scanner" target="1.8" />
+      <module name="BitmapCanary.duplicated_image_scanner.main" target="1.8" />
+      <module name="BitmapCanary.duplicated_image_scanner.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

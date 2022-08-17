@@ -1,9 +1,39 @@
 plugins {
-    id 'java-library'
-    id 'org.jetbrains.kotlin.jvm'
+    id 'java'
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_7
-    targetCompatibility = JavaVersion.VERSION_1_7
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+dependencies {
+    implementation("com.google.guava:guava:31.1-jre")
+}
+
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'me.simple.scanner.DupImgScanner'
+        attributes 'Manifest-Version': "1.0.3"
+    }
+    from {
+        exclude 'META-INF/MANIFEST.MF'
+        exclude 'META-INF/*.SF'
+        exclude 'META-INF/*.DSA'
+        exclude 'META-INF/*.RSA'
+        configurations.runtime.resolve().collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+}
+
+task makeJar(type: Copy, dependsOn: [build, jar]) {
+    group = "bitmap_canary"
+    from('build/libs') {
+        include '*.jar'
+        exclude '*-javadoc.jar'
+        exclude '*-sources.jar'
+    }
+    into(project.file("libs"))
 }
