@@ -24,6 +24,8 @@ public class DupImgScanner {
 
 //        dirPaths.add("/Users/simple/Desktop/workspace/android/sleepsignin/app/src/main/res/drawable-xxhdpi");
 
+        System.out.println("dirPaths = " + dirPaths);
+
         for (String dirPath : dirPaths) {
             File dirFile = new File(dirPath);
             if (dirFile.isFile()) return;

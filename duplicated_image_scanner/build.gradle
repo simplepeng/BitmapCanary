@@ -11,7 +11,6 @@ dependencies {
     implementation("com.google.guava:guava:31.1-jre")
 }
 
-
 jar {
     manifest {
         attributes 'Main-Class': 'me.simple.scanner.DupImgScanner'
@@ -25,15 +24,16 @@ jar {
         configurations.runtime.resolve().collect {
             it.isDirectory() ? it : zipTree(it)
         }
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }
 
-task makeJar(type: Copy, dependsOn: [build, jar]) {
-    group = "bitmap_canary"
-    from('build/libs') {
-        include '*.jar'
-        exclude '*-javadoc.jar'
-        exclude '*-sources.jar'
+task customFatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'me.simple.scanner.DupImgScanner'
     }
-    into(project.file("libs"))
+    baseName = 'dup_img_scanner'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
